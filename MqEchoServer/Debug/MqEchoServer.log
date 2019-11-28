@@ -1,2 +1,31 @@
 ﻿  MqEchoServer.cpp
-  MqEchoServer.vcxproj -> C:\Users\David\Desktop\anexos\src\Debug\MqEchoServer.exe
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(34): error C2065: 'srv_mq': undeclared identifier
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(34): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(34): error C2365: 'SysMqGet': redefinition; previous definition was 'function'
+  c:\users\david\desktop\ccc\so_trab\messagequeue\messagequeue.h(31): note: see declaration of 'SysMqGet'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(36): error C2059: syntax error: 'if'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(39): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(39): error C2365: 'printf': redefinition; previous definition was 'function'
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\stdio.h(948): note: see declaration of 'printf'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(43): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(43): error C2365: 'sprintf_s': redefinition; previous definition was 'function'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(46): error C3927: '->': trailing return type is not allowed after a non-function declarator
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(46): error C3484: syntax error: expected '->' before the return type
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(46): error C3613: missing return type after '->' ('int' assumed)
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(46): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(46): error C2371: 'cmd': redefinition; different basic types
+  c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(33): note: see declaration of 'cmd'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(46): error C2146: syntax error: missing ';' before identifier 'clientId'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(47): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(47): error C2365: 'SysMqPut': redefinition; previous definition was 'function'
+  c:\users\david\desktop\ccc\so_trab\messagequeue\messagequeue.h(34): note: see declaration of 'SysMqPut'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(49): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(49): error C2365: 'SysMqDestroy': redefinition; previous definition was 'function'
+  c:\users\david\desktop\ccc\so_trab\messagequeue\messagequeue.h(37): note: see declaration of 'SysMqDestroy'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(50): error C2059: syntax error: '}'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(50): error C2143: syntax error: missing ';' before '}'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(53): error C2059: syntax error: 'return'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(54): error C2059: syntax error: '}'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(54): error C2143: syntax error: missing ';' before '}'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(56): error C2143: syntax error: missing ';' before '{'
+c:\users\david\desktop\ccc\so_trab\mqechoserver\mqechoserver.cpp(56): error C2447: '{': missing function header (old-style formal list?)

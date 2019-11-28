@@ -2,5 +2,5 @@
   dllmain.cpp
   MessageQueue.cpp
   Generating Code...
-     Creating library C:\Users\David\Desktop\anexos\src\Debug\MessageQueue.lib and object C:\Users\David\Desktop\anexos\src\Debug\MessageQueue.exp
-  MessageQueue.vcxproj -> C:\Users\David\Desktop\anexos\src\Debug\MessageQueue.dll
+     Creating library C:\Users\David\Desktop\ccc\SO_trab\Debug\MessageQueue.lib and object C:\Users\David\Desktop\ccc\SO_trab\Debug\MessageQueue.exp
+  MessageQueue.vcxproj -> C:\Users\David\Desktop\ccc\SO_trab\Debug\MessageQueue.dll

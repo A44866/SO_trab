@@ -6,13 +6,30 @@
 #include <stdlib.h> 
 #include "EchoServer.h"
 
-int main()
+void startChildProcess(STARTUPINFO si, PROCESS_INFORMATION pi, char * arg);
+
+int main(int argc, char * argv[])
 {
-	SYSMQ_HANDLE srv_mq = SysMqCreate("echo", sizeof(ECHO_CMD), 128);
-
-	printf("Starting echo server!\n\n");
-
 	while (true) {
+		SYSMQ_HANDLE srv_mq = SysMqCreate("echo", sizeof(ECHO_CMD), 128);
+		printf("Starting echo server!\n\n");
+		STARTUPINFO si;
+		PROCESS_INFORMATION pi;
+		ZeroMemory(&si, sizeof(si));
+		si.cb = sizeof(si);
+		ZeroMemory(&pi, sizeof(pi));
+		startChildProcess(si, pi, argv[1]);
+		DWORD id = pi.dwProcessId;
+		HANDLE handle = OpenProcess(PROCESS_ALL_ACCESS, false, id);
+		DWORD exitCode = 0;
+		while (GetExitCodeProcess(handle, &exitCode) != FALSE) {}
+	}
+	return 0;
+}	
+		
+
+
+
 		ECHO_CMD cmd;
 		SysMqGet(srv_mq, &cmd);
 
@@ -34,5 +51,23 @@ int main()
 
 	SysMqDestroy(srv_mq);
 	return 0;
+}
+
+void startChildProcess(STARTUPINFO si, PROCESS_INFORMATION pi,char * arg) {
+	if (!CreateProcessA(NULL,
+		arg,
+		NULL,
+		NULL,
+		FALSE,
+		0,
+		NULL,
+		NULL,
+		&si,
+		&pi)
+		)
+	{
+		printf("CreateProcess failed (%d).\n", GetLastError());
+		return;
+	}
 }
 

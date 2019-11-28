@@ -140,13 +140,13 @@ VOID SearchFileDir(PSTR path, LPCSTR toFind,  PSEARCH_RESULT res) {
 
 BOOL DistributeWork(CHAR filepath[], LPCSTR toFind, PSEARCH_RESULT res)
 {
+
+	// Wait for one thread to be free
+	while (res->workLeft == MAX_CONCURRENCY_LEVEL) {	}
+
 	WaitForSingleObject(mutex, INFINITE);
 	res->workLeft++;	// Add work
 	ReleaseMutex(mutex);
-
-	// Wait for one thread to be free
-	while (res->workLeft == MAX_CONCURRENCY_LEVEL) {
-	}
 
 	PTHREAD_ARG arg = (PTHREAD_ARG)malloc(sizeof(THREAD_ARG));
 	arg->toFind = toFind;
