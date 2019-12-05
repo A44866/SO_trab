@@ -1,4 +1,0 @@
-﻿  UThread.c
-c:\users\david\desktop\so-maksym\so_trab\ex1\uthread\uthread.c(497): warning C4029: declared formal parameter list different from definition
-c:\users\david\desktop\so-maksym\so_trab\ex1\uthread\uthread.c(500): warning C4700: uninitialized local variable 'Thread' used
-  UThread2.vcxproj -> C:\Users\David\Desktop\so-maksym\SO_trab\x64\Debug\UThread2.dll
