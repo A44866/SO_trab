@@ -27,7 +27,7 @@ DWORD main(DWORD argc, PCHAR argv[]) {
 	strcpy_s(res.root, argv[1]);
 	res.totalResults = 0;
 
-	init(argv[1], argv[2], &res);
+	initiateWork(argv[1], argv[2], &res);
  
 	ShowResults(&res);
 	return 0;

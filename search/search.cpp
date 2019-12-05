@@ -6,6 +6,8 @@
 
 #include "search.h"
 
+int i = 0;
+
 // Mutex to handle multiple threads increasing value
 static HANDLE mutex;
 
@@ -54,7 +56,7 @@ DWORD __stdcall searchText(LPVOID threadArg) {
 	PTHREAD_ARG thread = (PTHREAD_ARG)threadArg;
 	LPCSTR path = thread->path;
 	LPCSTR toFind = thread->toFind;
-	printf("Thread %d working, tDirectory of files to search for reproductions = \"%s\"\n", thread->id,thread->path);
+	printf("Thread %d working, tDirectory of files to search for reproductions = \"%s\"\n", i++,thread->path);
 
 	PSEARCH_RESULT res = thread->res;
 	FILE *f = fopen(path, "r");
@@ -81,9 +83,9 @@ DWORD __stdcall searchText(LPVOID threadArg) {
 	}
 	if (fileRes != NULL) strcpy_s(fileRes->path, MAX_PATH, path);
 	res->errorCode = errorCode;
-	WaitForSingleObject(mutex, INFINITE);
-	res->workLeft--;
-	ReleaseMutex(mutex);
+	InterlockedDecrement(&res->workLeft);
+	SetEvent(res->eventt);
+	if (res->workLeft == 0) SetEvent(res->DoneAll);
 	return errorCode == OK;
 }
 
@@ -137,43 +139,28 @@ VOID SearchFileDir(PSTR path, LPCSTR toFind,  PSEARCH_RESULT res) {
 
 }
 
-
-BOOL DistributeWork(CHAR filepath[], LPCSTR toFind, PSEARCH_RESULT res)
+BOOL DistributeWork(CHAR filepath[], PCSTR toFind, PSEARCH_RESULT res)
 {
-	WaitForSingleObject(mutex, INFINITE);
-	res->workLeft++;	// Add work
-	ReleaseMutex(mutex);
-
-	// Wait for one thread to be free
-	while (res->workLeft == MAX_CONCURRENCY_LEVEL) {
+	if (InterlockedIncrement(&res->workLeft) > MAX_CONCURRENCY_LEVEL) {
+		WaitForSingleObject(res->eventt, INFINITE);
 	}
 
 	PTHREAD_ARG arg = (PTHREAD_ARG)malloc(sizeof(THREAD_ARG));
 	arg->toFind = toFind;
+	strcpy(arg->path,filepath);
 	arg->res = res;
-	arg->id = threadId++;
-	memset(arg->path,NULL, strlen(arg->path));
-	memcpy(arg->path, filepath, strlen(filepath));
+
 	// Add work to the thread pool
-	if (!QueueUserWorkItem(searchText,arg,NULL))
+	if (!QueueUserWorkItem((LPTHREAD_START_ROUTINE)searchText, arg, NULL))
 	{
 		return FALSE;
 	}
 	return TRUE;
 }
 
-INT init(PSTR path, LPCSTR toFind, PSEARCH_RESULT res) {
 
-	mutex = CreateMutex(NULL, FALSE, NULL);
-	// Iterate through pathRefFiles directory and sub directories
-	// invoking de processor (BMP_GetFlipsOfRefFile) for each ref file
-	res->workLeft = 0;
+VOID initiateWork(PSTR path, PCSTR toFind, PSEARCH_RESULT res) {
+	res->eventt = CreateEvent(NULL, TRUE, FALSE, NULL);
 	SearchFileDir(path, toFind, res);
-
-	while (res->workLeft != 0) {}
-
-	// Cleanup
-	CloseHandle(mutex);
-
-	return 0;
+	WaitForSingleObject(res->DoneAll, INFINITE);
 }

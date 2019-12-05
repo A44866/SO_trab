@@ -12,28 +12,29 @@ typedef struct _searchFileResult {
 	CHAR path[MAX_PATH];
 	int nLines;
 	INT lines[MAX_LINES];
-} SEARCH_FILE_RESULT, *PSEARCH_FILE_RESULT;
+} SEARCH_FILE_RESULT, * PSEARCH_FILE_RESULT;
 
 typedef struct _searchResult {
 	INT errorCode;
 	CHAR root[MAX_PATH];
 	int totalResults;
-	int workLeft;
+	long workLeft;
+	HANDLE eventt;
+	HANDLE DoneAll;
 	SEARCH_FILE_RESULT results[MAX_RESULTS];
-} SEARCH_RESULT, *PSEARCH_RESULT;
+} SEARCH_RESULT, * PSEARCH_RESULT;
 
 typedef struct pThread_Arg {
-	int id;
-	LPCSTR toFind;
-	PSEARCH_RESULT res;
+	PCSTR toFind;
 	CHAR path[MAX_PATH];
-} THREAD_ARG, *PTHREAD_ARG;
+	PSEARCH_RESULT res;
+} THREAD_ARG, * PTHREAD_ARG;
 
 VOID SearchFileDir(PSTR path, LPCSTR toFind, PSEARCH_RESULT res);
 
-BOOL DistributeWork(CHAR filepath[], LPCSTR toFind, PSEARCH_RESULT res);
+BOOL DistributeWork(CHAR filepath[], PCSTR toFind, PSEARCH_RESULT res);
 
-INT init(PSTR path, LPCSTR toFind, PSEARCH_RESULT res);
+VOID initiateWork(PSTR path, PCSTR toFind, PSEARCH_RESULT res);
 
 
 
