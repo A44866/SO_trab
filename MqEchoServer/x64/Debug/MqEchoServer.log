@@ -1,0 +1,7 @@
+﻿  MqEchoServer.cpp
+c:\users\david\desktop\so-p2\so_trab\mqechoserver\mqechoserver.cpp(50): warning C4138: '*/' found outside of comment
+c:\users\david\desktop\so-p2\so_trab\mqechoserver\mqechoserver.cpp(50): error C2059: syntax error: '/'
+c:\users\david\desktop\so-p2\so_trab\mqechoserver\mqechoserver.cpp(53): error C2059: syntax error: '}'
+c:\users\david\desktop\so-p2\so_trab\mqechoserver\mqechoserver.cpp(53): error C2143: syntax error: missing ';' before '}'
+c:\users\david\desktop\so-p2\so_trab\mqechoserver\mqechoserver.cpp(55): error C2143: syntax error: missing ';' before '{'
+c:\users\david\desktop\so-p2\so_trab\mqechoserver\mqechoserver.cpp(55): error C2447: '{': missing function header (old-style formal list?)

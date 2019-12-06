@@ -6,12 +6,9 @@
 
 #include "search.h"
 
-int i = 0;
-
 // Mutex to handle multiple threads increasing value
-static HANDLE mutex;
 
-static int threadId = 1;
+static int counter = 1;
 // utilitary functions
 
 static INT readLine(FILE *f, CHAR line[], int capacity) {
@@ -56,7 +53,7 @@ DWORD __stdcall searchText(LPVOID threadArg) {
 	PTHREAD_ARG thread = (PTHREAD_ARG)threadArg;
 	LPCSTR path = thread->path;
 	LPCSTR toFind = thread->toFind;
-	printf("Thread %d working, tDirectory of files to search for reproductions = \"%s\"\n", i++,thread->path);
+	printf("Thread %d working, tDirectory of files to search for reproductions = \"%s\"\n", thread->id,thread->path);
 
 	PSEARCH_RESULT res = thread->res;
 	FILE *f = fopen(path, "r");
@@ -99,7 +96,7 @@ DWORD __stdcall searchText(LPVOID threadArg) {
 	and foreach one all the lines where the string was found.
 
 */
-VOID SearchFileDir(PSTR path, LPCSTR toFind,  PSEARCH_RESULT res) {
+VOID SearchFileDir(PSTR path, PCSTR toFind,  PSEARCH_RESULT res) {
 
 	CHAR buffer[MAX_PATH];		// auxiliary buffer
 
@@ -139,15 +136,19 @@ VOID SearchFileDir(PSTR path, LPCSTR toFind,  PSEARCH_RESULT res) {
 
 }
 
+
 BOOL DistributeWork(CHAR filepath[], PCSTR toFind, PSEARCH_RESULT res)
 {
-	if (InterlockedIncrement(&res->workLeft) > MAX_CONCURRENCY_LEVEL) {
+	if (res->workLeft == MAX_CONCURRENCY_LEVEL) {
+		printf("Waiting for one thread to finish\n");
 		WaitForSingleObject(res->eventt, INFINITE);
 	}
+	InterlockedIncrement(&res->workLeft);
 
 	PTHREAD_ARG arg = (PTHREAD_ARG)malloc(sizeof(THREAD_ARG));
 	arg->toFind = toFind;
-	strcpy(arg->path,filepath);
+	arg->id = counter++;
+	strcpy(arg->path, filepath);
 	arg->res = res;
 
 	// Add work to the thread pool
@@ -158,9 +159,32 @@ BOOL DistributeWork(CHAR filepath[], PCSTR toFind, PSEARCH_RESULT res)
 	return TRUE;
 }
 
-
-VOID initiateWork(PSTR path, PCSTR toFind, PSEARCH_RESULT res) {
+VOID Init(PSTR path, PCSTR toFind, PSEARCH_RESULT res) {
+	res->workLeft = 0;
 	res->eventt = CreateEvent(NULL, TRUE, FALSE, NULL);
 	SearchFileDir(path, toFind, res);
 	WaitForSingleObject(res->DoneAll, INFINITE);
+}
+
+DWORD __stdcall Start(LPVOID threadArg) {
+	PTHREAD_ARG arg = (PTHREAD_ARG)malloc(sizeof(THREAD_ARG));
+	arg->toFind = toFind;
+	arg->id = counter++;
+	strcpy(arg->path, filepath);
+
+	long 
+	res->workLeft = 0;
+	res->eventt = CreateEvent(NULL, TRUE, FALSE, NULL);
+	SearchFileDir(path, toFind, res);
+	WaitForSingleObject(res->DoneAll, INFINITE);
+
+	int startIndex = strlen(res->root);
+	for (int i = 0; i < res->totalResults; ++i) {
+		PSEARCH_FILE_RESULT fres = res->results + i;
+		printf("~%s: ", fres->path + startIndex);
+		for (int j = 0; j < fres->nLines; ++j) {
+			printf("%d ", fres->lines[j]);
+		}
+		printf("\n");
+	}
 }

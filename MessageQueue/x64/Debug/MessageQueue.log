@@ -1,0 +1,6 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  MessageQueue.cpp
+  Generating Code...
+     Creating library C:\Users\David\Desktop\so-p2\SO_trab\x64\Debug\MessageQueue.lib and object C:\Users\David\Desktop\so-p2\SO_trab\x64\Debug\MessageQueue.exp
+  MessageQueue.vcxproj -> C:\Users\David\Desktop\so-p2\SO_trab\x64\Debug\MessageQueue.dll

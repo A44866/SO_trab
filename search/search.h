@@ -1,5 +1,5 @@
 #pragma once
-#define MAX_CONCURRENCY_LEVEL 4
+#define MAX_CONCURRENCY_LEVEL 3
 #define MAX_LINE  512
 #define MAX_LINES 128
 #define MAX_RESULTS 1024
@@ -12,7 +12,7 @@ typedef struct _searchFileResult {
 	CHAR path[MAX_PATH];
 	int nLines;
 	INT lines[MAX_LINES];
-} SEARCH_FILE_RESULT, * PSEARCH_FILE_RESULT;
+} SEARCH_FILE_RESULT, *PSEARCH_FILE_RESULT;
 
 typedef struct _searchResult {
 	INT errorCode;
@@ -22,19 +22,29 @@ typedef struct _searchResult {
 	HANDLE eventt;
 	HANDLE DoneAll;
 	SEARCH_FILE_RESULT results[MAX_RESULTS];
-} SEARCH_RESULT, * PSEARCH_RESULT;
+} SEARCH_RESULT, *PSEARCH_RESULT;
 
 typedef struct pThread_Arg {
 	PCSTR toFind;
+	int id;
 	CHAR path[MAX_PATH];
 	PSEARCH_RESULT res;
-} THREAD_ARG, * PTHREAD_ARG;
+} THREAD_ARG, *PTHREAD_ARG;
 
-VOID SearchFileDir(PSTR path, LPCSTR toFind, PSEARCH_RESULT res);
+typedef struct pThread_ArgServer {
+	PCSTR toFind;
+	int id;
+	CHAR path[MAX_PATH];
+	PSEARCH_RESULT res;
+} THREAD_ARGSERVER, *PTHREAD_ARGSERVER;
+
+VOID SearchFileDir(PSTR path, PCSTR toFind, PSEARCH_RESULT res);
 
 BOOL DistributeWork(CHAR filepath[], PCSTR toFind, PSEARCH_RESULT res);
 
-VOID initiateWork(PSTR path, PCSTR toFind, PSEARCH_RESULT res);
+VOID Init(PSTR path, PCSTR toFind, PSEARCH_RESULT res);
+
+DWORD __stdcall Start(LPVOID threadArg);
 
 
 
